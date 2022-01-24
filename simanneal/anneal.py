@@ -49,7 +49,7 @@ class Annealer(object):
     best_energy = None
     start = None
 
-    def __init__(self, initial_state=None, load_state=None):
+    def __init__(self, initial_state=None, load_state=None, disable_signal=False):
         if initial_state is not None:
             self.state = self.copy_state(initial_state)
         elif load_state:
@@ -58,7 +58,8 @@ class Annealer(object):
             raise ValueError('No valid values supplied for neither \
             initial_state nor load_state')
 
-        signal.signal(signal.SIGINT, self.set_user_exit)
+        if not disable_signal:
+            signal.signal(signal.SIGINT, self.set_user_exit)
 
     def save_state(self, fname=None):
         """Saves state to pickle"""
